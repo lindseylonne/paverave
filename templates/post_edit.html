@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="well spaced" style="width:97%;">
+      {% if "user_id" in session %}
+        {% if user_post %}
+          <h2>Edit Post</h2>
+          <form action="/posts/edit/{{ user_post.post_id }}" method="POST">
+              <div class="form-group">
+                  <label>Event Date:
+                    <input type="datetime-local" id="event_date" name="event_date"
+                             class="form-control input-sm"
+                             value="{{ user_post.event_date }}">
+                  </label><br>
+                  <label>Location:
+                    <input type="text" name="location"
+                             class="form-control input-sm"
+                             value="{{ user_post.location }}">
+                  </label><br>
+                  <label>* Post type:
+                    <select  name="ptype" id="ptype" required='true' class="form-control input-sm">
+                      <option value="compliment">compliment</option>
+                      <option value="comment">comment</option>
+                      <option value="criticism">criticism</option>
+                    </select>
+                  </label><br>
+                  <label>Post message:
+                    <input type="text" name="topic"
+                             class="form-control input-sm"
+                             value="{{ user_post.topic }}">
+                  </label><br>
+<!--  {#               {% if vehicle %}
+                  <label>Vehicle plate:
+                    <input type="text" name="vehicle_plate"
+                             class="form-control input-sm"
+                             value="{{ vehicle.vehicle_plate }}">
+                  </label><br>
+                  <label>Vehicle type (car, truck, MC):
+                    <input type="text" name="vtype"
+                             class="form-control input-sm"
+                             value="{{ vehicle.vehicle_plate }}">
+                  </label><br>
+                  <label>Vehicle make:
+                    <input type="text" name="make"
+                             class="form-control input-sm"
+                             value="{{ vehicle.vehicle_plate }}">
+                  </label><br>
+                  <label>Vehicle model:
+                    <input type="text" name="model"
+                             class="form-control input-sm"
+                             value="{{ vehicle.vehicle_plate }}">
+                  </label><br>
+                  <label>Vehicle color:
+                    <input type="text" name="color"
+                             class="form-control input-sm"
+                             value="{{ vehicle.vehicle_plate }}">
+                  </label><br>
+                {% endif %}  #}-->
+              </div>
+              <input type="submit" value="Submit"
+                     class="btn btn-danger">
+          </form>
+        {% endif %}
+      {% endif %}
+
+    </div>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>
+  $(function() {
+    var temp="{{ user_post.ptype }}"; 
+    $("#ptype").val(temp);
+  });
+</script>
+{% endblock %}

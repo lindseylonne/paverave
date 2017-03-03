@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="well spaced" style="width:97%;">
+        <h2>Posts:</h2>
+        <!-- TODO: search box for searching vehicle plates -->
+        {% if 'user_id' in session %}
+          <p><a href="/posts/add">Click here to add a post...</a></p>
+        {% else %}
+          <p><a href="/login">Login to add a post...</a></p>
+        {% endif %}
+
+        <ul>
+            {% if posts %}
+                <!-- TODO: make columns sortable -->
+                    <table class='table'>
+                    <thead>
+                        <tr>
+                            <td>Event Date</td>
+                            <td>Posted By</td>
+                            <td>Vehicle Plate</td>
+                            <td>Post Type</td>
+                            <td>Event Location</td>
+                            <td>Post Topic</td>
+                        </tr>
+                    </thead>
+                {% for post in posts %}
+                        <tr>
+                            <td>{{ post.event_date }}</td>
+                            <td>{{ post.username }}</td>
+                            <!-- TODO: make plate a link to all posts for that plate -->
+                            <td><a href="/posts/vehicle/{{ post.vehicle_plate }}">{{ post.vehicle_plate }}</a></td>
+                            <td>{{ post.ptype }}</td>
+                            <td>{{ post.location }}</td>
+                            <td><a href="/posts/detail/{{ post.post_id }}">{{ post.topic }}</a></td>
+                        </tr>
+                {% endfor %}
+                </table>
+            {% else %}
+                <p>No posts yet.</p>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- TODO: integrate post_list and post_vehicle, and change routes and title accordingly. -->
+    <div class="well spaced" style="width:97%;">
+        <h2>Posts:</h2>
+        {% if 'user_id' in session %}
+          <p><a href="/posts/add">Click here to add a new post.</a></p>
+        {% else %}
+          <p><a href="/login">Login to post, comment, vote...</a></p>
+        {% endif %}
+            {% if posts %}
+                <div class="table-responsive">
+                    <table class='table table-bordered' id="posts_table" style:"input {color: black;}">   
+                    <thead>
+                        <tr>
+                            <th>Event Date</th>
+                            <th>Posted By</th>
+                            <th>Vehicle Plate</th>
+                            <th>Post Type</th>
+                            <th>Event Location</th>
+                            <th>Post Topic</th>
+                        </tr>
+                    </thead>
+                {% for post in posts %}
+                        <tr>
+                            <td>{{ post.event_date }}</td>
+                            <td><a href="/posts/{{ post.user_id }}">{{ post.username }}</a></td>
+                            <!-- TODO: make one link go to post detail where comments are lisited. -->
+                            <td><a href="/posts/vehicle/{{ post.vehicle_plate }}">{{ post.vehicle_plate }}</a></td>
+                            <td>{{ post.ptype }}</td>
+                            <td>{{ post.location }}</td>
+                            <td><a href="/posts/detail/comments/{{ post.post_id }}">{{ post.topic }}</a></td>
+                        </tr>
+                {% endfor %}
+                </table>
+            </div>
+            {% else %}
+                <p>No posts yet.</p>
+<!--                 {% if 'user_id' in session %}
+                  <p><a href="/posts/add">Click here to add a new post.</a></p>
+                {% else %}
+                  <p><a href="/login">Login to add a post.</a></p>
+                {% endif %} -->
+            {% endif %}
+    </div>
+    <script>
+        // $(document).ready( function () {
+            $('#posts_table').DataTable();
+            // change text to white in bootstrap theme
+            // $('#posts_table').css('background-color', 'black');
+            // $(nTd).children('td').css('background-color', 'black');
+        // } );
+    </script>
+{% endblock %}

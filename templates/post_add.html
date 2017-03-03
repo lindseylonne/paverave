@@ -2,6 +2,9 @@
 {% block content %}
 
 <div class="well spaced" style="width:97%;">
+<!--                       <p>Click the button to get your coordinates.</p>
+                  <button onclick="getLocation()">Try It</button>
+                  <p id="get-location"></p> -->
       {% if "user_id" in session %}
           <h2>Add Post</h2>
           <p id="formInstructions">* All fields are required.</p>
@@ -69,5 +72,34 @@ $(document).ready(function(){
   $('#event_date').val(new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().substring(0,16));
 });
 </script>
-
+<script>
+    var x = document.getElementById("get-location");
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+    function showPosition(position) {
+        x.innerHTML = "Latitude: " + position.coords.latitude + 
+        "<br>Longitude: " + position.coords.longitude; 
+    }
+    function showError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                x.innerHTML = "User denied the request for Geolocation."
+                break;
+            case error.POSITION_UNAVAILABLE:
+                x.innerHTML = "Location information is unavailable."
+                break;
+            case error.TIMEOUT:
+                x.innerHTML = "The request to get user location timed out."
+                break;
+            case error.UNKNOWN_ERROR:
+                x.innerHTML = "An unknown error occurred."
+                break;
+    }
+}
+</script>
 {% endblock %}

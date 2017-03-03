@@ -420,7 +420,7 @@ def post_add():
     db.session.commit()
     flash("Post added.")
 
-    return redirect("/posts/detail/%s" % post.post_id)
+    return redirect("/posts/detail/comments/%s" % post.post_id)
 
 
 @app.route("/posts/edit/<int:post_id>", methods=['GET'])
@@ -502,7 +502,7 @@ if __name__ == "__main__":
     # that we invoke the DebugToolbarExtension
 
     # Do not debug for demo
-    app.debug = False
+    app.debug = True
 
     connect_to_db(app)
 

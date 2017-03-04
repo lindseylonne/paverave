@@ -487,7 +487,7 @@ def post_edit(post_id):
     ptype = request.form["ptype"]
     topic = request.form["topic"]
     # vehicle_plate = request.form["vehicle_plate"]
-    location = request.form["location"]
+    # location = request.form["location"]
 
     # TODO: iterate through form variables to eliminate blanks
     # TODO: add ability to delete posts
@@ -499,7 +499,7 @@ def post_edit(post_id):
         post.ptype = ptype
         post.topic = topic
         # post.vehicle_plate = vehicle_plate
-        post.location = location
+        # post.location = location
         flash("Post updated.")
     else:
         # post = Post(event_date=event_date, ptype=ptype, topic=topic, vehicle_plate=vehicle_plate, location=location, user_id=user_id)
@@ -508,7 +508,7 @@ def post_edit(post_id):
 
     db.session.commit()
 
-    return redirect("/posts/detail/%s" % post_id)
+    return redirect("/posts/detail/comments/%s" % post.post_id)
 
 
 @app.route("/posts/vehicle/<vehicle_plate>", methods=['GET'])

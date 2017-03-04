@@ -18,7 +18,7 @@
     <script type="text/javascript" src="/static/js/post-comments.js"></script>
 
     <div class="well spaced" style="width:97%;">
-          <h2>Post Details:</h2>
+          <h2>Post:</h2>
         {% if user_post %}
         <!-- make variable available to javascript for ajax call-->
           <meta id="user-post" data-user-post="{{user_post}}">
@@ -26,28 +26,37 @@
         <!-- TODO: add links to user, plate, topic? -->
         <!-- TODO: put post details in one row table? -->
         <!-- TODO: make post details collapsible, collpase by default showing only one line with user, plate, topic? -->
-          <p>Event Date: {{ user_post.event_date }}</p>
+          <table style="border-collapse: separate; border-spacing: 10px;">
+          <tr  class="header">
+          <td colspan="2" style="text-decoration: underline;"> /\ Click here to show/hide details. \/ </td>
+          </tr>
+          <tr><td>Event Date: </td><td> {{ user_post.event_date }}</td></tr>
+          <tr><td>Posted By: </td><td> <a href="/posts/{{ user_post.user_id }}">{{ user_post.username }}</a></td></tr>
+          <tr><td>Post Type: </td><td> {{ user_post.ptype }}</td></tr>
+          <tr><td>Vehicle Plate: </td><td> <a href="/posts/vehicle/{{ user_post.vehicle_plate }}">{{ user_post.vehicle_plate }}</a></td></tr>
+          </table>
+<!--           <p>Event Date: {{ user_post.event_date }}</p></tr>
           <p>Posted By: <a href="/posts/{{ user_post.user_id }}">{{ user_post.username }}</a></p>
           <p>Post Type: {{ user_post.ptype }}</p>
-          <p>Vehicle Plate: <a href="/posts/vehicle/{{ user_post.vehicle_plate }}">{{ user_post.vehicle_plate }}</a></p>
+          <p>Vehicle Plate: <a href="/posts/vehicle/{{ user_post.vehicle_plate }}">{{ user_post.vehicle_plate }}</a></p> -->
           <!-- TODO: add reverse geocode of lat and long from db to display address -->         
  {#<!--            <p>Event Location: {{ user_post.location }}</p> --> #}
 <!--           TODO: add ability to delete post?
           TODO: hide ability to edit post so comments are not invalidated? -->
           {% if ('user_id' in session) and (user_post.user_id == session['user_id']) %}
             <!-- <button type="button">Edit Post</button> -->
-              <p><h3>Post Topic: 
-                <a href="/posts/edit/{{ user_post.post_id }}">{{ user_post.topic }}</a>
+              <p><h3>Topic: 
+                <a href="/posts/edit/{{ user_post.post_id }}">"{{ user_post.topic }}"</a>
               </h3></p>
           {% else %}
-              <p><h3>Post Topic: {{ user_post.topic }}</h3></p>
+              <p><h3>Topic: "{{ user_post.topic }}"</h3></p>
           {% endif %}
         {% else %}
           <p>Post not found.</p>
         {% endif %}
-        <h2>Post Comments:</h2> 
-          <div id="comments-container">
-          </div>
+        <h3>Comments:</h3> 
+<!--           <div id="comments-container">
+          </div> -->
         {% if post_comments %}
         <meta id="comments-all" data-comments-all="{{post_comments}}">
           <div id="comments-container">
@@ -56,4 +65,9 @@
           <p>No comments yet.</p>
         {% endif %}
     </div>
+<script>
+$('.header').click(function(){
+    $(this).nextUntil('tr.header').slideToggle(500);
+});
+</script>
 {% endblock %}

@@ -2,9 +2,6 @@
 {% block content %}
 
 <div class="well spaced" style="width:97%;">
-<!--                       <p>Click the button to get your coordinates.</p>
-                  <button onclick="getLocation()">Try It</button>
-                  <p id="get-location"></p> -->
       {% if "user_id" in session %}
           <h2>Add Post</h2>
           <p id="formInstructions">* All fields are required.</p>
@@ -17,22 +14,28 @@
                   </label><br>
                   <!-- TODO: add search for existing vehicle plates -->
                   <label>Vehicle plate (7 characters including spaces, 0-9, A-Z):
-                    <input type="text" name="vehicle_plate" maxlength="7" minlength="7" required='true'
+                    <input type="text" name="vehicle_plate" id="vehicle_plate" maxlength="7" minlength="7" required='true'
                              class="form-control input-sm" pattern="[a-zA-Z0-9\s]+" style="text-transform: uppercase;">
                   </label><br>
                   <!-- TODO: add google location services and address search -->
+                  <!-- TODO: validate form that either location or address exist in full -->
                   <label>Location (5 digit US zip code):
-                    <input type="text" name="location" maxlength="10" minlength="5" pattern="[0-9]{5}" required='true' class="form-control input-sm">
+<!--                     <input type="text" name="location" maxlength="10" minlength="5" pattern="[0-9]{5}" required='true' class="form-control input-sm"> -->
+                    <input type="text" name="latitude" id="latitude" value="latitude" class="form-control input-sm" disabled>
+                    <input type="text" name="longitude" id="longitude" value="longitude" class="form-control input-sm" disabled>
                   </label><br>
                   <label>Post type:
-                    <select  name="ptype" required='true' class="form-control input-sm">
+                    <select  name="ptype" id="ptype" required='true' class="form-control input-sm">
+                      <option value=""></option>
+                      <option value="alert">alert</option>
                       <option value="compliment">compliment</option>
                       <option value="comment">comment</option>
                       <option value="criticism">criticism</option>
                     </select>
                   </label><br>
-                  <label>Post topic (64 characters max):
-                    <input type="text" name="topic" maxlength='64' required='true'
+                  <!-- TODO: add charater count -->
+                  <label>Post topic (140 characters max):
+                    <input type="text" id="topic" name="topic" maxlength='140' required='true'
                              class="form-control input-sm">
                   </label><br>
 <!-- 
@@ -62,6 +65,8 @@
               <input type="submit" value="Submit"
                      class="btn btn-danger">
           </form>
+          <p><button id="get-location" onclick="getLocation()">Get Location</button></p>
+          <p id="loc-error"></p>
       {% endif %}
 
     </div>
@@ -71,35 +76,47 @@ $(document).ready(function(){
   var now=new Date();
   $('#event_date').val(new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().substring(0,16));
 });
-</script>
-<script>
-    var x = document.getElementById("get-location");
+
+// $('#get-location').on('click', function(event){
+    // event.preventDefault();
+
+
+    var e = document.getElementById("loc-error");
+    // var latitude = document.getElementById("latitude");
+    // var longitude = document.getElementById("longitude");
     function getLocation() {
+      event.preventDefault();
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
         } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
+            e.innerHTML = "Geolocation is not supported by this browser. Your post will not be added to the map.";
         }
     }
     function showPosition(position) {
-        x.innerHTML = "Latitude: " + position.coords.latitude + 
-        "<br>Longitude: " + position.coords.longitude; 
+        // latitude.innerHTML = "Latitude: " + position.coords.latitude;
+        // longitude.innerHTML = "Longitude: " + position.coords.longitude;
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        $("#latitude").val(latitude);
+        $("#longitude").val(longitude);
     }
     function showError(error) {
         switch(error.code) {
             case error.PERMISSION_DENIED:
-                x.innerHTML = "User denied the request for Geolocation."
+                e.innerHTML = "User denied the request for Geolocation. Your post will not be added to the map."
                 break;
             case error.POSITION_UNAVAILABLE:
-                x.innerHTML = "Location information is unavailable."
+                e.innerHTML = "Location information is unavailable. Your post will not be added to the map."
                 break;
             case error.TIMEOUT:
-                x.innerHTML = "The request to get user location timed out."
+                e.innerHTML = "The request to get user location timed out. Your post will not be added to the map."
                 break;
             case error.UNKNOWN_ERROR:
-                x.innerHTML = "An unknown error occurred."
+                e.innerHTML = "An unknown error occurred. Your post will not be added to the map."
                 break;
+        }
     }
-}
+  // });
+
 </script>
 {% endblock %}

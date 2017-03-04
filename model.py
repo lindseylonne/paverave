@@ -110,10 +110,10 @@ class Post(db.Model):
     event_date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     ptype = db.Column(db.String(64), nullable=False)  # set default as comment here?
     # TODO: default get location api, or zip code
-    location = db.Column(db.String(64), nullable=False)  # zip code for alpha version
-    loc_lat = db.Column(db.Numeric(precision=9, scale=6))
-    loc_log = db.Column(db.Numeric(precision=9, scale=6))
-    topic = db.Column(db.String(140), nullable=False)
+    # location = db.Column(db.String(64), nullable=False)  # zip code for alpha version
+    latitude = db.Column(db.Numeric(precision=9, scale=6))
+    longitude = db.Column(db.Numeric(precision=9, scale=6))
+    topic = db.Column(db.String(255), nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     date_modified = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     date_removed = db.Column(db.DateTime)
@@ -127,8 +127,8 @@ class Post(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Roadrate post_id=%s user_id=%s vehicle_plate=%s event_date=%s ptype=%s location=%s topic=%s>" % (
-            self.post_id, self.user_id, self.vehicle_plate, self.event_date, self.ptype, self.location, self.topic)
+        return "<Roadrate post_id=%s user_id=%s vehicle_plate=%s event_date=%s ptype=%s latitude=%s longitude=%s topic=%s>" % (
+            self.post_id, self.user_id, self.vehicle_plate, self.event_date, self.ptype, self.latitude, self.longitude, self.topic)
 
 
 class Comment(db.Model):
@@ -142,15 +142,15 @@ class Comment(db.Model):
     comment_id = db.Column(db.String(64), nullable=False)  # used by jquery-comments for position in thread
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'))
-    parent = db.Column(db.String(64))  # null means first comment in thread for jquery-comments
+    parent = db.Column(db.String(64), default=0, nullable=False)  # null means first comment in thread for jquery-comments
     date_created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     date_modified = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     # Either content or fileURL must be present for jquery_comments
     content = db.Column(db.String(255), nullable=False)
     file_url = db.Column(db.String(255))
     # TODO: allow attachment uploading and add file field in DB
-    # pings = db.Column(db.String(255), nullable=False)
-    upvotes = db.Column(db.Integer, nullable=False)
+    pings = db.Column(db.String(255))
+    upvotes = db.Column(db.Integer, default=0, nullable=False)
     date_removed = db.Column(db.DateTime)
 
     # Define relationship to posts db

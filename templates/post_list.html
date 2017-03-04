@@ -17,7 +17,7 @@
                             <th>Posted By</th>
                             <th>Vehicle Plate</th>
                             <th>Post Type</th>
-                            <th>Event Location</th>
+                            <!-- <th>Event Location</th> -->
                             <th>Post Topic</th>
                         </tr>
                     </thead>
@@ -28,7 +28,7 @@
                             <!-- TODO: make one link go to post detail where comments are lisited. -->
                             <td><a href="/posts/vehicle/{{ post.vehicle_plate }}">{{ post.vehicle_plate }}</a></td>
                             <td>{{ post.ptype }}</td>
-                            <td>{{ post.location }}</td>
+                            {# <!-- <td>{{ post.location }}</td> --> #}
                             <td><a href="/posts/detail/comments/{{ post.post_id }}">{{ post.topic }}</a></td>
                         </tr>
                 {% endfor %}

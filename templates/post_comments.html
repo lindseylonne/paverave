@@ -31,7 +31,8 @@
           <p>Post Type: {{ user_post.ptype }}</p>
           <p>Post Topic: {{ user_post.topic }}</p>
           <p>Vehicle Plate: {{ user_post.vehicle_plate }}</p>
-          <p>Event Location: {{ user_post.location }}</p>
+          <!-- TODO: add reverse geocode of lat and long from db to display address -->         
+ {#<!--            <p>Event Location: {{ user_post.location }}</p> --> #}
           {% if 'user_id' in session %}
             {% if user_post.user_id == session['user_id'] %}
             <!-- <button type="button">Edit Post</button> -->

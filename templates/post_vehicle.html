@@ -20,7 +20,7 @@
                             <td>Posted By</td>
                             <td>Vehicle Plate</td>
                             <td>Post Type</td>
-                            <td>Event Location</td>
+                            <!-- <td>Event Location</td> -->
                             <td>Post Topic</td>
                         </tr>
                     </thead>
@@ -31,7 +31,7 @@
                             <!-- TODO: make plate a link to all posts for that plate -->
                             <td><a href="/posts/vehicle/{{ post.vehicle_plate }}">{{ post.vehicle_plate }}</a></td>
                             <td>{{ post.ptype }}</td>
-                            <td>{{ post.location }}</td>
+                            {#<!-- <td>{{ post.location }}</td> -->#}
                             <td><a href="/posts/detail/{{ post.post_id }}">{{ post.topic }}</a></td>
                         </tr>
                 {% endfor %}

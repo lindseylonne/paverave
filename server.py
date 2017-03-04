@@ -5,6 +5,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Post, Vehicle, Comment
+from pygeocoder import Geocoder
 import json
 # from sqlalchemy.sql import and_
 # from sqlalchemy import Date, cast
@@ -323,7 +324,7 @@ def post_detail_comments(post_id):
 
     # convert to dictionary format
     post_comments = [comment.__dict__ for comment in post_comments]
-    # print post_comments
+    print post_comments
     # convert to json format
     post_comments = json.dumps(post_comments)
     # print post_comments
@@ -391,31 +392,55 @@ def post_add():
         # raise Exception("No user logged in.")
 
     # Get form variables
-    event_date = request.form["event_date"]
-    ptype = request.form["ptype"]
-    topic = request.form["topic"]
-    location = request.form["location"]
-    vehicle_plate = request.form["vehicle_plate"]
+    event_date = request.form.get("event_date")
+    ptype = request.form.get("ptype")
+    topic = request.form.get("topic")
+    latitude = request.form.get("latitude")
+    longitude = request.form.get("longitude")
+    vehicle_plate = request.form.get("vehicle_plate")
+
+    # event_date = request.form["event_date"]
+    # ptype = request.form["ptype"]
+    # topic = request.form["topic"]
+    # latitude = request.form["latitude"]
+    # longitude = request.form["longitude"]
+    # vehicle_plate = request.form["vehicle_plate"]
+
     vehicle_plate = vehicle_plate.upper()
+
+    # if not (latitude and longitude):
+    #     street = request.form["street"]
+    #     city = request.form["city"]
+    #     state = request.form["state"]
+    #     zipcode = request.form["zipcode"]
+    #     address = street + ", " + city + ", " + state + " " + zipcode
+
+    # print address
+    # location = Geocoder.geocode(address)
+    # print location
+    # print location.latitude
+    # print location.longitude
+    # print location[0]
+    # print location[1]
+
     # vtype = request.form["vtype"]
     # make = request.form["make"]
     # model = request.form["model"]
     # color = request.form["color"]
 
     # TODO: iterate through form variables to eliminate blanks
-
     # TODO: iterate through form variables to verify data formats
-    # TODO: check if vehicle exists in DB, present user with choice, allow modification
+
     vehicle_check = Vehicle.query.filter_by(vehicle_plate=vehicle_plate).first()
 
     # vehicle must exist in db before post can be added
-    # vehicle = Vehicle(vehicle_plate=vehicle_plate, vtype=vtype, make=make, model=model, color=color)
     if not (vehicle_check):
         vehicle = Vehicle(vehicle_plate=vehicle_plate, user_id_adder=user_id)
+        # vehicle = Vehicle(vehicle_plate=vehicle_plate, vtype=vtype, make=make, model=model, color=color)
         db.session.add(vehicle)
         db.session.commit()
 
-    post = Post(event_date=event_date, ptype=ptype, topic=topic, vehicle_plate=vehicle_plate, location=location, user_id=user_id)
+    post = Post(event_date=event_date, ptype=ptype, topic=topic, vehicle_plate=vehicle_plate, latitude=latitude, longitude=longitude, user_id=user_id)
     db.session.add(post)
     db.session.commit()
     flash("Post added.")

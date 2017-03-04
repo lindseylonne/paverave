@@ -268,9 +268,10 @@ def post_detail_comments_json():
             # comment.date_created = comment.date_created.strftime('%Y-%m-%d')
             comment.date_created = comment.date_created.strftime('%Y, %m, %d %H:%M:%S')
             # comment.date_created = comment.date_created.strftime('%Y-%m-%dT%H:%M:%f+00:00')
-            # comment.date_modified = comment.date_modified.strftime('%Y-%m-%d')
-            comment.date_modified = comment.date_modified.strftime('%Y, %m, %d %H:%M:%S')
-            # comment.date_modified = comment.date_modified.strftime('%Y-%m-%dT%H:%M:%f+00:00')
+            if (comment.date_modified):
+                # comment.date_modified = comment.date_modified.strftime('%Y-%m-%d')
+                # comment.date_modified = comment.date_modified.strftime('%Y-%m-%dT%H:%M:%f+00:00')
+                comment.date_modified = comment.date_modified.strftime('%Y, %m, %d %H:%M:%S')
             if (user_id == comment.user_id):
                 comment.created_by_current_user = True
             else:
@@ -310,8 +311,9 @@ def post_detail_comments(post_id):
         for comment in post_comments:
             # comment.date_created = comment.date_created.strftime('%Y-%m-%d')
             comment.date_created = comment.date_created.strftime('%Y-%m-%dT%H:%M:%f+00:00')
-            # comment.date_modified = comment.date_modified.strftime('%Y-%m-%d')
-            comment.date_modified = comment.date_modified.strftime('%Y-%m-%dT%H:%M:%f+00:00')
+            if (comment.date_modified):
+                # comment.date_modified = comment.date_modified.strftime('%Y-%m-%d')
+                comment.date_modified = comment.date_modified.strftime('%Y-%m-%dT%H:%M:%f+00:00')
             if (user_id == comment.user_id):
                 comment.created_by_current_user = True
             else:
@@ -341,7 +343,7 @@ def post_detail_comments_form(post_id):
         flash("Please log in to access posts.")
         return redirect("/login")
 
-    comment_id = request.form["comment_id"]
+    cid = request.form["comment_id"]
     parent = request.form["parent"]
     date_created = request.form["date_created"]
     # TODO: check if date_modified should be in another function or if loop
@@ -355,7 +357,7 @@ def post_detail_comments_form(post_id):
     # comment = Comment(comment_id=comment_id, user_id=user_id, post_id=post_id, parent=parent,
     #                   date_created=date_created, date_modified=date_modified, content=content,
     #                   upvotes=upvote_count)
-    comment = Comment(comment_id=comment_id, user_id=user_id, post_id=post_id, parent=parent,
+    comment = Comment(user_id=user_id, post_id=post_id, cid=cid, parent=parent,
                       date_created=date_created, content=content, upvotes=upvotes)
     db.session.add(comment)
     db.session.commit()

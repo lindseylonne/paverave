@@ -56,7 +56,7 @@
 
         // Function to save a comment to the database
         var saveComment = function(data) {
-
+          console.log(data);
           // Convert pings to human readable format
           $(data.pings).each(function(index, id) {
             var user = usersArray.filter(function(user){return user.id == id;})[0];
@@ -66,7 +66,7 @@
           var commentId = data.comment_id;
           var contentText = data.content;
           var dateCreated = data.date_created;
-          var dateModified = data.date_modified;
+          // var dateModified = data.date_modified;
           var parentId = data.parent;
           var upvoteCount = data.upvote_count;
 
@@ -74,7 +74,7 @@
               'comment_id': commentId,
               'parent': parentId,
               'date_created': dateCreated,
-              'date_modified': dateModified,
+              // 'date_modified': dateModified,
               'content': contentText,
               'upvote_count': upvoteCount
           };

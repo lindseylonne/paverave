@@ -34,7 +34,7 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(64), unique=True, nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    date_modified = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    date_modified = db.Column(db.DateTime)
     date_removed = db.Column(db.DateTime)
     profile_url = db.Column(db.String(255))
     profile_picture_url = db.Column(db.String(255))
@@ -42,13 +42,16 @@ class User(db.Model):
     # Define relationship to Vehicle db through UserVehicle
     vehicles = relationship("UserVehicle", back_populates="user")
 
+        # Define relationship to user db through UserVehicles
+    comments = relationship("CommentUpvote", back_populates="user")
+
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<User user_id=%s email=%s>" % (self.user_id, self.email)
+        return "<User user_id=%s email=%s username = %s>" % (self.user_id, self.email, self.username)
 
 
-class UserVehicle(db.Model):  # do we need this once users claim vehicles?
+class UserVehicle(db.Model):  # do we need this once users claim vehicles? Or just add to owner field in vehicle table?
     """Association table for users and vehicles on paverave site because vehicles can exist without user."""
 
     __tablename__ = "uservehicles"
@@ -76,19 +79,20 @@ class Vehicle(db.Model):
 
     __tablename__ = "vehicles"
 
-    # TODO: Beta version, allow users to add more behicle info, incl pics
+    # TODO: Beta version, allow users to add more vehicle info, incl pics
     vehicle_plate = db.Column(db.String(64), primary_key=True)  # license plate
     # TODO: Beta version, add region and country plate formats including symbols.
     vtype = db.Column(db.String(64))  # car, truck, motorcycle, semi, plane, boat, etc.
-    # veh_style = db.Column(db.String(64)) # sedan, coupe, flatbed, hazmat, sport, etc.
+    vstyle = db.Column(db.String(64))  # sedan, coupe, flatbed, hazmat, sport, etc.
     make = db.Column(db.String(64))
     model = db.Column(db.String(64))
     color = db.Column(db.String(64))
     user_id_adder = db.Column(db.Integer, nullable=False)  # user adding car
     date_added = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     date_modified = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    # allow owners, but they will be stored in UserVehicles association table, because not required
-    # user_id_owner = db.Column(db.Integer)
+    # TODO: move owner to UserVehicles association table?
+    user_id_owner = db.Column(db.Integer)
+    vpic_url = db.Column(db.String(255))  # TODO: beta, add ability to add vehicle photo url
 
     # Define relationship to user db through UserVehicles
     users = relationship("UserVehicle", back_populates="vehicle")
@@ -105,18 +109,18 @@ class Post(db.Model):
     __tablename__ = "posts"
 
     post_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))  # user posting
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     vehicle_plate = db.Column(db.String(64), db.ForeignKey('vehicles.vehicle_plate'))
     event_date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    ptype = db.Column(db.String(64), nullable=False)  # set default as comment here?
-    # TODO: default get location api, or zip code
-    # location = db.Column(db.String(64), nullable=False)  # zip code for alpha version
+    ptype = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.String(255))
     latitude = db.Column(db.Numeric(precision=9, scale=6))
     longitude = db.Column(db.Numeric(precision=9, scale=6))
     topic = db.Column(db.String(255), nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    date_modified = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    date_modified = db.Column(db.DateTime)
     date_removed = db.Column(db.DateTime)
+    comment_count = db.Column(db.Integer, default=0)
 
     # Define relationship to users db
     user = db.relationship("User", backref=db.backref("paverave", order_by=user_id))
@@ -132,23 +136,22 @@ class Post(db.Model):
 
 
 class Comment(db.Model):
-    """Comments on a post on PaveRave site by a user about vehicle."""
+    """Comments on a post on PaveRave site."""
 
     # TODO: crate commentPings association table to enable user pings in jquery-comments
-    # TODO: create commentUpvotes assoc table to allow upvoting
 
     __tablename__ = "comments"
-    cid = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    comment_id = db.Column(db.String(64), nullable=False)  # used by jquery-comments for position in thread
+
+    comment_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.post_id'))
-    parent = db.Column(db.String(64), default=0, nullable=False)  # null means first comment in thread for jquery-comments
+    cid = db.Column(db.String(64), nullable=False)  # used by jquery-comments for position in thread
+    parent = db.Column(db.String(64), default="null", nullable=False)  # null means first comment in thread for jquery-comments
     date_created = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
-    date_modified = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+    date_modified = db.Column(db.DateTime)
     # Either content or fileURL must be present for jquery_comments
     content = db.Column(db.String(255), nullable=False)
     file_url = db.Column(db.String(255))
-    # TODO: allow attachment uploading and add file field in DB
     pings = db.Column(db.String(255))
     upvotes = db.Column(db.Integer, default=0, nullable=False)
     date_removed = db.Column(db.DateTime)
@@ -156,11 +159,38 @@ class Comment(db.Model):
     # Define relationship to posts db
     post = db.relationship("Post", backref=db.backref("paverave", order_by=post_id))
 
+    # Define relationship to user db through UserVehicles
+    users = relationship("CommentUpvote", back_populates="comment")
+
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Roadrate cid=%d comment_id=%s user_id=%d post_id=%d parent=%s date_created=%s date_modified=%s content=%s upvotes=%d>" % (
-            self.cid, self.comment_id, self.user_id, self.post_id, self.parent, self.date_created, self.date_modified, self.content, self.upvotes)
+        return "<Roadrate comment_id=%d user_id=%d post_id=%d cid=%s parent=%s date_created=%s date_modified=%s content=%s upvotes=%d>" % (
+            self.comment_id, self.user_id, self.post_id, self.cid, self.parent, self.date_created, self.content, self.upvotes)
+
+
+class CommentUpvote(db.Model):
+    """Upvotes on a comment on a post on the PaveRave site."""
+
+    __tablename__ = "commentupvotes"
+    upvote_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    comment_id = db.Column(db.Integer, db.ForeignKey('comments.comment_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+
+    # # Define relationship to comments table
+    # comment = db.relationship("Comment", backref=db.backref("paverave", order_by=comment_id))
+
+    # # Define relationship to users table
+    # user = db.relationship("User", backref=db.backref("paverave", order_by=user_id))
+
+    comment = relationship("Comment", back_populates="users")
+    user = relationship("User", back_populates="comments")
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Roadrate upvote_id=%d comment_id=%s user_id=%d>" % (
+            self.upvote_id, self.comment_id, self.user_id)
 
 
 ##############################################################################

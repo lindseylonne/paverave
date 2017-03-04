@@ -217,7 +217,7 @@ def edit_user_detail(user_id):
 def posts_list():
     """Show list of all posts for all users."""
 
-    posts = Post.query.order_by(Post.event_date.desc()).all()
+    posts = Post.query.order_by(Post.event_date.desc()).limit(100).all()
     for post in posts:
         post.event_date = post.event_date.strftime('%m/%d/%Y %I:%M %P')
         user = User.query.filter_by(user_id=post.user_id).first()
@@ -234,7 +234,7 @@ def user_posts_list(user_id):
     # user_id = session.get("user_id")
 
     # if user_id:
-    posts = Post.query.filter_by(user_id=user_id).order_by(Post.event_date.desc()).all()
+    posts = Post.query.filter_by(user_id=user_id).order_by(Post.event_date.desc()).limit(100).all()
     for post in posts:
         post.event_date = post.event_date.strftime('%m/%d/%Y %I:%M %P')
         user = User.query.filter_by(user_id=post.user_id).first()
@@ -263,7 +263,7 @@ def post_detail_comments_json():
         user = User.query.filter_by(user_id=user_post.user_id).first()
         user_post.username = user.username
         # get comments
-        post_comments = Comment.query.filter_by(post_id=post_id).all()
+        post_comments = Comment.query.filter_by(post_id=post_id).limit(100).all()
         for comment in post_comments:
             # comment.date_created = comment.date_created.strftime('%Y-%m-%d')
             comment.date_created = comment.date_created.strftime('%Y, %m, %d %H:%M:%S')
@@ -307,7 +307,7 @@ def post_detail_comments(post_id):
         user = User.query.filter_by(user_id=user_post.user_id).first()
         user_post.username = user.username
         # get comments
-        post_comments = Comment.query.filter_by(post_id=post_id).all()
+        post_comments = Comment.query.filter_by(post_id=post_id).limit(100).all()
         for comment in post_comments:
             # comment.date_created = comment.date_created.strftime('%Y-%m-%d')
             comment.date_created = comment.date_created.strftime('%Y-%m-%dT%H:%M:%f+00:00')
@@ -515,7 +515,7 @@ def post_edit(post_id):
 def posts_by_vehicle(vehicle_plate):
     """Show posts for a vehicle."""
 
-    posts = Post.query.filter_by(vehicle_plate=vehicle_plate).order_by(Post.event_date.desc()).all()
+    posts = Post.query.filter_by(vehicle_plate=vehicle_plate).order_by(Post.event_date.desc()).limit(100).all()
     for post in posts:
         post.event_date = post.event_date.strftime('%m/%d/%Y %I:%M %P')
         user = User.query.filter_by(user_id=post.user_id).first()

@@ -27,17 +27,20 @@
         <!-- TODO: put post details in one row table? -->
         <!-- TODO: make post details collapsible, collpase by default showing only one line with user, plate, topic? -->
           <p>Event Date: {{ user_post.event_date }}</p>
-          <p>Posted By: {{ user_post.username }}</p>
+          <p>Posted By: <a href="/posts/{{ user_post.user_id }}">{{ user_post.username }}</a></p>
           <p>Post Type: {{ user_post.ptype }}</p>
-          <p>Post Topic: {{ user_post.topic }}</p>
-          <p>Vehicle Plate: {{ user_post.vehicle_plate }}</p>
+          <p>Vehicle Plate: <a href="/posts/vehicle/{{ user_post.vehicle_plate }}">{{ user_post.vehicle_plate }}</a></p>
           <!-- TODO: add reverse geocode of lat and long from db to display address -->         
  {#<!--            <p>Event Location: {{ user_post.location }}</p> --> #}
-          {% if 'user_id' in session %}
-            {% if user_post.user_id == session['user_id'] %}
+<!--           TODO: add ability to delete post?
+          TODO: hide ability to edit post so comments are not invalidated? -->
+          {% if ('user_id' in session) and (user_post.user_id == session['user_id']) %}
             <!-- <button type="button">Edit Post</button> -->
-              <a href="/posts/edit/{{ user_post.post_id }}">Edit post.</a>
-            {% endif %}
+              <p><h3>Post Topic: 
+                <a href="/posts/edit/{{ user_post.post_id }}">{{ user_post.topic }}</a>
+              </h3></p>
+          {% else %}
+              <p><h3>Post Topic: {{ user_post.topic }}</h3></p>
           {% endif %}
         {% else %}
           <p>Post not found.</p>

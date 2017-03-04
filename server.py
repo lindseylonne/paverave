@@ -140,7 +140,8 @@ def login_process():
 def logout():
     """Log out."""
 
-    if (session["user_id"]):
+    # if (session["user_id"]):
+    if ("user_id" in session):
         del session["user_id"]
     flash("Logged Out.")
     return redirect("/login")

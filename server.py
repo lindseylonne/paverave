@@ -327,7 +327,7 @@ def post_detail_comments(post_id):
 
     # convert to dictionary format
     post_comments = [comment.__dict__ for comment in post_comments]
-    print post_comments
+    # print post_comments
     # convert to json format
     post_comments = json.dumps(post_comments)
     # print post_comments

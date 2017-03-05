@@ -34,15 +34,13 @@ source env/bin/activate (--always-copy if on Windows)
 
 ### Installing
 
-[Fork it! And clone it.](https://guides.github.com/activities/forking/)
+[Fork the paverave repository, then clone it to your local project directory.](https://guides.github.com/activities/forking/)
 
 ```
-from your paverave project dir:
 git init
-
 ```
 
-Install the required packages: 
+Install the required packages listed in 
 [requirements.txt](https://github.com/lindseylonne/paverave/blob/master/requirements.txt)
 
 ```
@@ -54,7 +52,6 @@ Crete the database:
 ```
 python -i model.py
 >>> db.create_all()
-ctrl-D
 ```
 
 Start the Flask server:
@@ -66,8 +63,7 @@ python server.py
 Behold the wonder:
 
 ```
-Open your browser of choice and go to:
-localhost:5000
+Open your browser of choice and go to: http://localhost:5000
 ```
 
 ## Running the tests
@@ -106,7 +102,7 @@ Python, Javascript, PostgreSQL, and...
 
 ## Contributing
 
-Please read [CONTRIBUTING.md]() for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/lindseylonne/paverave/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
@@ -120,9 +116,9 @@ See also the list of [contributors](https://github.com/lindseylonne/paverave/con
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/lindseylonne/paverave/blob/master/LICENSE.md) file for details
 
 ## Acknowledgments
 
-* Heartfelt thanks to the amazing staff at [Hackbright Academy](https://hackbrightacademy.com/). I could not have done this without your dedication and support!
-* Much love to my Hackbright Cohort mates; Ada Winter 2017. Thank you for the friendship and inspiration!
+* Heartfelt thanks to the amazing staff at [Hackbright Academy](https://hackbrightacademy.com/). I could not have done this without your tireless dedication and support!
+* Much love to my Hackbright cohort mates in Ada Winter 2017. Thank you for the friendship and inspiration!

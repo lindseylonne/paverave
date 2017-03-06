@@ -1,6 +1,12 @@
 # PaveRave!
 
-Enter a vehicle license plate, and leave comments.
+http://www.paverave.com
+Enter a vehicle license plate, and create a post. Comment and upvote. Sort and search. 
+Use for good or evil as you see fit... just keep the paverage online and off the streets, please!
+More to come: Heat map, mobile app, social features like badges and carma points. 
+Stay tuned! Email news@paverave.com with "subcribe" in the subject to receive notification of new features.
+
+(I created the initial version of this, my first solo project - in 2 sprints and approximately 80 hours - as part of an accelerated programming course at Hackbright Academy. Feedback is welcome and encouraged!)
 
 ## Getting Started
 
@@ -66,7 +72,7 @@ Behold the wonder:
 Open your browser of choice and go to: http://localhost:5000
 ```
 
-## Running the tests
+## Running the tests (loading...)
 
 Explain how to run the automated tests for this system
 
@@ -78,7 +84,7 @@ Explain what these tests test and why
 Give an example
 ```
 
-### And coding style tests
+### And coding style tests (loading...)
 
 Explain what these tests test and why
 
@@ -86,7 +92,7 @@ Explain what these tests test and why
 Give an example
 ```
 
-## Deployment
+## Deployment (loading...)
 
 Add additional notes about how to deploy this on a live system
 
@@ -122,3 +128,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 
 * Heartfelt thanks to the amazing staff at [Hackbright Academy](https://hackbrightacademy.com/). I could not have done this without your tireless dedication and support!
 * Much love to my Hackbright cohort mates in Ada Winter 2017. Thank you for the friendship and inspiration!
+* Deepest gratitude to my family and friends for their patience while I dropped off the face of the planet for a few weeks.

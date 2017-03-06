@@ -6,7 +6,7 @@
         {% if 'user_id' in session %}
           <p><a href="/posts/add">Click here to add a new post.</a></p>
         {% else %}
-          <p><a href="/login">Login to post, comment, vote...</a></p>
+          <p><a href="/login">Login to post...</a></p>
         {% endif %}
             {% if posts %}
                 <div class="table-responsive">
@@ -45,7 +45,9 @@
     </div>
     <script>
         // $(document).ready( function () {
-            $('#posts_table').DataTable();
+            $('#posts_table').DataTable({
+                "order": [[ 0, "desc" ]]
+            });
             // change text to white in bootstrap theme
             // $('#posts_table').css('background-color', 'black');
             // $(nTd).children('td').css('background-color', 'black');

@@ -5,7 +5,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Post, Vehicle, Comment
-from pygeocoder import Geocoder
+# from pygeocoder import Geocoder
 import json
 # from sqlalchemy.sql import and_
 # from sqlalchemy import Date, cast
@@ -25,6 +25,8 @@ app.jinja_env.undefined = StrictUndefined
 
 # Create instance of argon2 password hasher
 # ph = PasswordHasher()
+
+# TODO: refactor code to fewer routes (index, posts, map, profile, login/register) and AJAX calls for the rest.
 
 
 @app.route('/')

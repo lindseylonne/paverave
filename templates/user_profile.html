@@ -3,12 +3,19 @@
 
 <div class="well spaced" style="width:97%">
   <h2>Profile</h2>
-
+        {% if 'user_id' in session %}
+          <p><a href="/posts/add">Click here to add a new post.</a></p>
+        {% else %}
+          <p><a href="/login">Login to post, comment, vote...</a></p>
+        {% endif %}
   <b><p style="color:red">Email: {{ email }}</p>
   <p style="color:red">Username: {{ username }}</p></b>
   <br>
   <p>
-  <a href="/profile/edit/{{ session['user_id'] }}">Edit profile</a>
+        {% if 'user_id' in session %}
+          <p><a href="/profile/edit/{{ session['user_id'] }}">Edit profile</a></p>
+  
+ <!--  TODO: allow user to add their vehicle -->
 <!--   <h3>Vehicles</h3>
   <br>List of vehicles here<br>
   <br>Add Vehicle Form Here <br>

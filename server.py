@@ -219,6 +219,7 @@ def posts_map():
     """Show map of post locations."""
 
     posts = Post.query.order_by(Post.event_date.desc()).limit(100).all()
+
     for post in posts:
         post.event_date = post.event_date.strftime('%m/%d/%Y %I:%M %P')
 
@@ -233,15 +234,19 @@ def posts_map():
 def post_location_info():
     """JSON information about post locations for map."""
 
-    posts = {
-        post.vehicle_plate: {
-            "latitude": post.latitude,
-            "longitude": post.longitude
-        }
-        for post in Post.query.order_by(Post.event_date.desc()).limit(100).all()
-    }
-    print posts
-    return jsonify(posts)
+    locations = {}
+    counter = 0
+    posts = Post.query.order_by(Post.event_date.desc()).limit(100).all()
+
+    for post in posts:
+        latitude = str(post.latitude)
+        longitude = str(post.longitude)
+        if (latitude != "None") and (longitude != "None"):
+            locations[counter] = {'latitude': latitude, 'longitude': longitude, 'vehicle_plate': post.vehicle_plate}
+            counter = counter + 1
+
+    # print locations
+    return jsonify(locations)
 
 
 @app.route("/posts", methods=['GET'])

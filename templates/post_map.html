@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+/*      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }*/
+    </style>
+
+    <div id="map" class="well spaced" style="width:97%;"></div>
+    
+  
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoxfdmR_jPAfEUSDkxVkrsvdnJDpvG_yc&callback=initMap">
+    </script>
+
+    <script>
+
+      function initMap() {
+        var myLatLng = {lat: 37.788746, lng: -122.411585};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: myLatLng
+        });
+
+        // Define global infoWindow
+        // If you do this inside the loop where you retrieve the json,
+        // the windows do not automatically close when a new marker is clicked
+        // and you end up with a bunch of windows opened at the same time.
+        // What this does is create one infowindow and we replace the content
+        // inside for each marker.
+        var infoWindow = new google.maps.InfoWindow({
+            width: 150
+        });
+
+        // Retrieving the information with AJAX
+        $.get('/post_locations.json', function (posts) {
+            //console.log(posts);
+            // Attach markers to each post location in returned JSON
+            // JSON looks like:
+            // {
+            //  "1": {
+            //    "vehicle_plate": "123 ABC",
+            //    "latitude": "70.71139573",
+            //    "longitude": "-147.8381939"
+            //   },...
+            // }
+            var post, marker, html;
+
+            for (var key in posts) {
+                post = posts[key];
+
+                // Define the marker
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(post.latitude, post.longitude),
+                    map: map,
+                    title: 'License Plate: ' + post.vehicle_plate,
+                    // icon: '/static/img/polar.png'
+                });
+
+                // Define the content of the infoWindow
+                html = (
+                    '<div class="window-content">' +
+                        '<p><b>Vehicle Plate: </b>' + post.vehicle_plate + '</p>' +
+                    '</div>');
+
+                // Inside the loop we call bindInfoWindow passing it the marker,
+                // map, infoWindow and contentString
+                bindInfoWindow(marker, map, infoWindow, html);
+            }
+
+        });
+
+        // When a marker is clicked it closes any currently open infowindows
+        // Sets the content for the new marker with the content passed through
+        // then it open the infoWindow with the new content on the marker that's clicked
+        function bindInfoWindow(marker, map, infoWindow, html) {
+            google.maps.event.addListener(marker, 'click', function () {
+                infoWindow.close();
+                infoWindow.setContent(html);
+                infoWindow.open(map, marker);
+            });
+        }
+      }
+      //google.maps.event.addDomListener(window, 'load', initMap);
+    </script>
+
+{% endblock %}

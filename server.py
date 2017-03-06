@@ -214,6 +214,36 @@ def edit_user_detail(user_id):
     return redirect("/profile/%s" % user_id)
 
 
+@app.route("/posts/map", methods=['GET'])
+def posts_map():
+    """Show map of post locations."""
+
+    posts = Post.query.order_by(Post.event_date.desc()).limit(100).all()
+    for post in posts:
+        post.event_date = post.event_date.strftime('%m/%d/%Y %I:%M %P')
+
+        # user = User.query.filter_by(user_id=post.user_id).first()
+        # post.username = user.username
+    # TODO: add username to posts db so we do not double query?
+
+    return render_template("post_map.html", posts=posts)
+
+
+@app.route('/post_locations.json')
+def post_location_info():
+    """JSON information about post locations for map."""
+
+    posts = {
+        post.vehicle_plate: {
+            "latitude": post.latitude,
+            "longitude": post.longitude
+        }
+        for post in Post.query.order_by(Post.event_date.desc()).limit(100).all()
+    }
+    print posts
+    return jsonify(posts)
+
+
 @app.route("/posts", methods=['GET'])
 def posts_list():
     """Show list of all posts for all users."""
@@ -409,6 +439,8 @@ def post_add():
     # longitude = request.form["longitude"]
     # vehicle_plate = request.form["vehicle_plate"]
 
+    print latitude, longitude
+
     vehicle_plate = vehicle_plate.upper()
 
     # if not (latitude and longitude):
@@ -449,6 +481,83 @@ def post_add():
     flash("Post added.")
 
     return redirect("/posts/detail/comments/%s" % post.post_id)
+
+
+@app.route("/post_add.json", methods=['POST'])
+def post_add_json():
+    """Add a post."""
+
+    user_id = session.get("user_id")
+
+    if not user_id:
+        flash("Please log in to access posts.")
+        return redirect("/login")
+        # raise Exception("No user logged in.")
+
+    # Get form variables
+    event_date = request.form.get("event_date")
+    ptype = request.form.get("ptype")
+    topic = request.form.get("topic")
+    latitude = request.form.get("latitude")
+    longitude = request.form.get("longitude")
+    vehicle_plate = request.form.get("vehicle_plate")
+
+    # event_date = request.form["event_date"]
+    # ptype = request.form["ptype"]
+    # topic = request.form["topic"]
+    # latitude = request.form["latitude"]
+    # longitude = request.form["longitude"]
+    # vehicle_plate = request.form["vehicle_plate"]
+
+    print latitude, longitude
+
+    vehicle_plate = vehicle_plate.upper()
+
+    # if not (latitude and longitude):
+    #     street = request.form["street"]
+    #     city = request.form["city"]
+    #     state = request.form["state"]
+    #     zipcode = request.form["zipcode"]
+    #     address = street + ", " + city + ", " + state + " " + zipcode
+
+    # print address
+    # location = Geocoder.geocode(address)
+    # print location
+    # print location.latitude
+    # print location.longitude
+    # print location[0]
+    # print location[1]
+
+    # vtype = request.form["vtype"]
+    # make = request.form["make"]
+    # model = request.form["model"]
+    # color = request.form["color"]
+
+    # TODO: iterate through form variables to eliminate blanks
+    # TODO: iterate through form variables to verify data formats
+
+    vehicle_check = Vehicle.query.filter_by(vehicle_plate=vehicle_plate).first()
+
+    # vehicle must exist in db before post can be added
+    if not (vehicle_check):
+        vehicle = Vehicle(vehicle_plate=vehicle_plate, user_id_adder=user_id)
+        # vehicle = Vehicle(vehicle_plate=vehicle_plate, vtype=vtype, make=make, model=model, color=color)
+        db.session.add(vehicle)
+        db.session.commit()
+
+    post = Post(event_date=event_date, ptype=ptype, topic=topic, vehicle_plate=vehicle_plate, latitude=latitude, longitude=longitude, user_id=user_id)
+    # print post
+    db.session.add(post)
+    db.session.commit()
+    flash("Post added.")
+
+    url = "/posts/detail/comments/"
+    url = url + str(post.post_id)
+    print url
+    # return redirect("/posts/detail/comments/%s" % post.post_id)
+    # return jsonify({'status': 'success'})
+    return jsonify({'status': 'success', 'redirect': url})
+    # return JSON(new {success=true, redirect=Url.Action("/")})
 
 
 @app.route("/posts/edit/<int:post_id>", methods=['GET'])

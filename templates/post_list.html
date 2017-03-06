@@ -36,21 +36,14 @@
             </div>
             {% else %}
                 <p>No posts yet.</p>
-<!--                 {% if 'user_id' in session %}
-                  <p><a href="/posts/add">Click here to add a new post.</a></p>
-                {% else %}
-                  <p><a href="/login">Login to add a post.</a></p>
-                {% endif %} -->
             {% endif %}
     </div>
     <script>
-        // $(document).ready( function () {
+        $(document).ready(function(){
             $('#posts_table').DataTable({
                 "order": [[ 0, "desc" ]]
             });
-            // change text to white in bootstrap theme
-            // $('#posts_table').css('background-color', 'black');
-            // $(nTd).children('td').css('background-color', 'black');
-        // } );
+            $('#posts-list a').addClass("active");
+        });
     </script>
 {% endblock %}

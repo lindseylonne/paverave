@@ -7,8 +7,12 @@
         </div>
 	</div>
 <script>
-   function goto(){
-       location.href = "/posts"
-   }
+    $(document).ready(function(){
+        $('#paverave-home a').addClass("active");
+        
+       function goto(){
+           location.href = "/posts"
+       }
+    });
 </script>
 {% endblock %}

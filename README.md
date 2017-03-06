@@ -105,6 +105,7 @@ Python, Javascript, PostgreSQL, and...
 * [jquery-comments](http://viima.github.io/jquery-comments) - JQuery comments plugin with reply and upvote.
 * [DataTables](https://datatables.net/) - JQuery plugin for table generation with search and sort.
 * [argon2](http://argon2-cffi.readthedocs.io/en/stable/argon2.html) - Used for password hashing.
+* [Google Maps Javascript API](https://developers.google.com/maps/documentation/javascript/) - Showing locations of posts
 
 ## Contributing
 

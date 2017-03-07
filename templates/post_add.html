@@ -1,23 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<style>
+  form  { display: table;      }
+  p     { display: table-row;  }
+  label { display: table-cell; }
+  input { display: table-cell; }
+</style>
 <div class="well spaced" style="width:97%;">
           <h2>Add Post</h2>
           {% if "user_id" in session %}
-          <p id="formInstructions">* All fields are required.</p>
           <form id="addPost" action="/posts/add" method="POST">
               <div class="form-group">
                 <!-- TODO: restrict time entry to not future. -->
-                  <label>Event Date:
+                <p>
+                  <label>Event Date:</label>
                     <input type="datetime-local" id="event_date" name="event_date" required='true'
                              class="form-control input-sm">
-                  </label><br>
+                <p/>
                   <!-- TODO: add search for existing vehicle plates -->
-                  <label>Vehicle plate (7 characters, 0-9, A-Z, use spaces for symbols):
+                <p>
+                  <label>License Plate:</label>
                     <input type="text" name="vehicle_plate" id="vehicle_plate" maxlength="7" minlength="7" required='true'
                              class="form-control input-sm" pattern="[a-zA-Z0-9\s]+" style="text-transform: uppercase;">
-                  </label><br>
-                  <label>Post type:
+                </p>
+                <p>
+                  <label>Post type:</label>
                     <select  name="ptype" id="ptype" required='true' class="form-control input-sm">
                       <option value=""></option>
                       <option value="alert">alert</option>
@@ -27,21 +34,26 @@
                       <option value="question">question</option>
                       <option value="suggestion">suggestion</option>
                     </select>
-                  </label><br>
+                 </p>
                   <!-- TODO: add charater count -->
-                  <label>Post topic (140 characters max):
+                  <p>
+                    <label>Post topic:</label>
                     <input type="text" id="topic" name="topic" maxlength='140' required='true'
                              class="form-control input-sm">
-                  </label><br>
+                  </p>
                   <!-- TODO: add google location services and address search -->
                   <!-- TODO: validate form that either location or address exist in full -->
-                  <label>Location (Optional: Adds ability to view post on map.):
+                  <p>
+                  <label>Location (Map):</label>
 <!--                     <input type="text" name="location" maxlength="10" minlength="5" pattern="[0-9]{5}" required='true' class="form-control input-sm"> -->
                     <input type="text" name="latitude" id="latitude" value="latitude" class="form-control input-sm" disabled>
+                  </p>
+                  <p>
+                  <label><button id="get-location" type="button">Get Location</button></label>
                     <input type="text" name="longitude" id="longitude" value="longitude" class="form-control input-sm" disabled>
-                    <p><button id="get-location" type="button">Get Location</button></p>
+                    
                     <!-- <p><button id="get-location" onclick="getLocation()">Get Location</button></p> -->
-                  </label><br>
+                  </p>
 <!-- 
                   <label>Vehicle type:
                     <select  name="vtype" class="form-control input-sm">

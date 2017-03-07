@@ -27,13 +27,18 @@
         <!-- TODO: put post details in one row table? -->
         <!-- TODO: make post details collapsible, collpase by default showing only one line with user, plate, topic? -->
           <table style="border-collapse: separate; border-spacing: 10px;">
+            <!-- <thead> -->
           <tr  class="header">
-          <td colspan="2" style="text-decoration: underline;"> /\ Click here to show/hide details. \/ </td>
+          <td colspan="2" style="text-decoration: underline;"> [View post details] </td>
           </tr>
+        <!-- </thead> -->
+        <!-- <tbody style="display: none;"> -->
+        <!-- <tbody class="body"> -->
           <tr><td>Event Date: </td><td> {{ user_post.event_date }}</td></tr>
           <tr><td>Posted By: </td><td> <a href="/posts/{{ user_post.user_id }}">{{ user_post.username }}</a></td></tr>
           <tr><td>Post Type: </td><td> {{ user_post.ptype }}</td></tr>
           <tr><td>Vehicle Plate: </td><td> <a href="/posts/vehicle/{{ user_post.vehicle_plate }}">{{ user_post.vehicle_plate }}</a></td></tr>
+        <!-- </tbody> -->
           </table>
 <!--           <p>Event Date: {{ user_post.event_date }}</p></tr>
           <p>Posted By: <a href="/posts/{{ user_post.user_id }}">{{ user_post.username }}</a></p>
@@ -66,8 +71,11 @@
         {% endif %}
     </div>
 <script>
-$('.header').click(function(){
-    $(this).nextUntil('tr.header').slideToggle(500);
-});
+  $(document).ready(function(){
+    $('.header').nextUntil('tr.header').slideToggle(100);
+    $('.header').click(function(){
+        $(this).nextUntil('tr.header').slideToggle(100);
+    });
+  });
 </script>
 {% endblock %}

@@ -98,14 +98,11 @@
              id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav" id="navbar-nav">
                 <li id="posts-list"><a href="/posts">All Posts</a></li>
-<!--                 {% if 'user_id' in session %}
-                  <li><a href="/posts/add">Add Post</a></li>
-                {% endif %} -->
-                <!-- <li><a href="/posts/search">Search Posts</a></li> -->
                 <li id="posts-map"><a href="/posts/map">Map</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               {% if "user_id" in session %}
+                  <li id="user-post-add"><a href="/posts/add">Add Post</a></li>
                   <li id="user-posts"><a href="/posts/{{ session['user_id'] }}">My Posts</a></li>
                   <li id="user-profile"><a href="/profile/{{ session['user_id'] }}">Profile</a></li>
                   <li id="user-logout"><a href="/logout">Logout</a></li>
@@ -131,7 +128,6 @@
 
      $(function() {
         $('#bs-example-navbar-collapse-1 a').click(function() {
-          console.log("testing");
            // $('#nav li').removeClass();
            // $($(this).attr('href')).addClass('active');
         });

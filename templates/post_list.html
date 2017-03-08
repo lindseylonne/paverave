@@ -2,12 +2,14 @@
 {% block content %}
 <!-- TODO: integrate post_list and post_vehicle, and change routes and title accordingly. -->
     <div class="well spaced" style="width:97%;">
-        <h2>Posts:</h2>
-        {% if 'user_id' in session %}
+        <h3>Posts:</h3>
+        {#}
+<!--         {% if 'user_id' in session %}
           <p><a href="/posts/add">Click here to add a new post.</a></p>
         {% else %}
           <p><a href="/login">Login to post...</a></p>
-        {% endif %}
+        {% endif %} -->
+        #}
             {% if posts %}
                 <div class="table-responsive">
                     <table class='table table-bordered' id="posts_table" style:"input {color: black;}">   

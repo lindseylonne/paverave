@@ -338,29 +338,29 @@ def post_detail_comments(post_id):
 
     user_id = session.get("user_id")
 
-    if user_id:
+    # if user_id:
         # get post data
-        user_post = Post.query.filter_by(post_id=post_id).first()
-        user_post.event_date = user_post.event_date.strftime('%m/%d/%Y %I:%M %P')
-        user = User.query.filter_by(user_id=user_post.user_id).first()
-        user_post.username = user.username
-        # get comments
-        post_comments = Comment.query.filter_by(post_id=post_id).limit(100).all()
-        for comment in post_comments:
-            # comment.date_created = comment.date_created.strftime('%Y-%m-%d')
-            comment.date_created = comment.date_created.strftime('%Y-%m-%dT%H:%M:%f+00:00')
-            if (comment.date_modified):
-                # comment.date_modified = comment.date_modified.strftime('%Y-%m-%d')
-                comment.date_modified = comment.date_modified.strftime('%Y-%m-%dT%H:%M:%f+00:00')
-            if (user_id == comment.user_id):
-                comment.created_by_current_user = True
-            else:
-                comment.created_by_current_user = False
-            # remove from beginnso can be converted to json
-            del comment._sa_instance_state
-    else:
-        flash("Please log in to access posts.")
-        return redirect("/login")
+    user_post = Post.query.filter_by(post_id=post_id).first()
+    user_post.event_date = user_post.event_date.strftime('%m/%d/%Y %I:%M %P')
+    user = User.query.filter_by(user_id=user_post.user_id).first()
+    user_post.username = user.username
+    # get comments
+    post_comments = Comment.query.filter_by(post_id=post_id).limit(100).all()
+    for comment in post_comments:
+        # comment.date_created = comment.date_created.strftime('%Y-%m-%d')
+        comment.date_created = comment.date_created.strftime('%Y-%m-%dT%H:%M:%f+00:00')
+        if (comment.date_modified):
+            # comment.date_modified = comment.date_modified.strftime('%Y-%m-%d')
+            comment.date_modified = comment.date_modified.strftime('%Y-%m-%dT%H:%M:%f+00:00')
+        if (user_id == comment.user_id):
+            comment.created_by_current_user = True
+        else:
+            comment.created_by_current_user = False
+        # remove from beginnso can be converted to json
+        del comment._sa_instance_state
+    # else:
+    #     flash("Please log in to access posts.")
+    #     return redirect("/login")
 
     # convert to dictionary format
     post_comments = [comment.__dict__ for comment in post_comments]

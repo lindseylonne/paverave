@@ -4,7 +4,7 @@
 <div class="well spaced" style="width:97%;">
       {% if "user_id" in session %}
         {% if user_post %}
-          <h2>Edit Post</h2>
+          <h3>Edit Post</h3>
           <form action="/posts/edit/{{ user_post.post_id }}" method="POST">
               <div class="form-group">
                   <label>Event Date:

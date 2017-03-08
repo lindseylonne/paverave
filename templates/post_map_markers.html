@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+
+<style>
+    /* Always set the map height explicitly to define the size of the div
+    * element that contains the map. */
+    #map {
+        height: 100%;
+    }
+</style>
+
+<div id="map" class="well spaced" style="width:97%;"></div>
+
+<script>
+
+    //window.initMap = function() {
+    function initMap() {
+
+        var myLatLng = {lat: 37.788746, lng: -122.411585};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: myLatLng
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length]
+          });
+        });
+
+        console.log(markers);
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    }
+        // Define global infoWindow
+        // If you do this inside the loop where you retrieve the json,
+        // the windows do not automatically close when a new marker is clicked
+        // and you end up with a bunch of windows opened at the same time.
+        // What this does is create one infowindow and we replace the content
+        // inside for each marker.
+        // var infoWindow = new google.maps.InfoWindow({
+        //     width: 150
+        // });
+
+        // Retrieving the information with AJAX
+        var locations = [];
+        $.get('/post_locations.json', function (posts) {
+            //console.log(posts);
+            // Attach markers to each post location in returned JSON
+            // JSON looks like:
+            // {
+            //  "1": {
+            //    "vehicle_plate": "123 ABC",
+            //    "latitude": "70.71139573",
+            //    "longitude": "-147.8381939"
+            //   },...
+            // }
+            //var post, marker, html;
+
+            for (var key in posts) {
+                post = posts[key];
+                var latitude = post.latitude;
+                var longitude = post.longitude;
+                locations.push({'lat': latitude, 'lng': longitude});
+
+                // Define the content of the infoWindow
+                // html = (
+                //     '<div class="window-content">' +
+                //         '<p><b>Vehicle Plate: </b>' + post.vehicle_plate + '</p>' +
+                //     '</div>');
+
+                // Inside the loop we call bindInfoWindow passing it the marker,
+                // map, infoWindow and contentString
+                // bindInfoWindow(marker, map, infoWindow, html);
+            }
+            //console.log(locations);
+        });
+
+        // When a marker is clicked it closes any currently open infowindows
+        // Sets the content for the new marker with the content passed through
+        // then it open the infoWindow with the new content on the marker that's clicked
+        // function bindInfoWindow(marker, map, infoWindow, html) {
+        //     google.maps.event.addListener(marker, 'click', function () {
+        //         infoWindow.close();
+        //         infoWindow.setContent(html);
+        //         infoWindow.open(map, marker);
+        //     });
+        // }
+    
+
+
+    $('#posts-map a').addClass("active");
+
+</script>
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
+<!-- TODO: get permanent api key and replace temporary -->
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoxfdmR_jPAfEUSDkxVkrsvdnJDpvG_yc&callback=initMap">
+</script>
+
+{% endblock %}

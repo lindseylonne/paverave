@@ -18,7 +18,7 @@
     <script type="text/javascript" src="/static/js/post-comments.js"></script>
 
     <div class="well spaced" style="width:97%;">
-          <h2>Post:</h2>
+          <h3>Post:</h3>
         {% if user_post %}
         <!-- make variable available to javascript for ajax call-->
           <meta id="user-post" data-user-post="{{user_post}}">
@@ -60,15 +60,18 @@
           <p>Post not found.</p>
         {% endif %}
         <h3>Comments:</h3> 
-<!--           <div id="comments-container">
-          </div> -->
-        {% if post_comments %}
-        <meta id="comments-all" data-comments-all="{{post_comments}}">
-          <div id="comments-container">
-          </div>
-        {% else %}
-          <p>No comments yet.</p>
-        {% endif %}
+          {% if ('user_id' in session) %}
+            {% if post_comments %}
+              <meta id="comments-all" data-comments-all="{{post_comments}}">
+              <div id="comments-container">
+              </div>
+            {% else %}
+              <p>No comments yet.</p>
+            {% endif %}
+          {% else %}
+              <p><a href="/login">Login to view comments.</a></p>
+          {% endif %}
+
     </div>
 <script>
   $(document).ready(function(){

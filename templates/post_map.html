@@ -59,7 +59,7 @@
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(post.latitude, post.longitude),
                     map: map,
-                    title: 'License Plate: ' + post.vehicle_plate,
+                    title: 'License Plate: ' + post.vehicle_plate + ", Comment: " + post.topic,
                     // icon: '/static/img/polar.png'
                 });
                 // Define the content of the infoWindow

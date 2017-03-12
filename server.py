@@ -244,7 +244,7 @@ def post_location_info():
         latitude = str(post.latitude)
         longitude = str(post.longitude)
         if (latitude != "None") and (longitude != "None"):
-            locations[counter] = {'latitude': latitude, 'longitude': longitude, 'vehicle_plate': post.vehicle_plate}
+            locations[counter] = {'latitude': latitude, 'longitude': longitude, 'vehicle_plate': post.vehicle_plate, 'topic': post.topic}
             counter = counter + 1
 
     # print locations
@@ -282,6 +282,26 @@ def user_posts_list(user_id):
     #     return redirect("/login")
 
     return render_template("post_list.html", posts=posts)
+
+
+@app.route("/posts/user/<int:user_id>", methods=['GET'])
+def user_posts_list_session(user_id):
+    """Show list of all posts by specified user if logged in."""
+
+    user_id = session.get("user_id")
+
+    if user_id:
+        posts = Post.query.filter_by(user_id=user_id).order_by(Post.event_date.desc()).limit(100).all()
+        for post in posts:
+            post.event_date = post.event_date.strftime('%m/%d/%Y %I:%M %P')
+            user = User.query.filter_by(user_id=post.user_id).first()
+            post.username = user.username
+    else:
+        flash("Please log in to access posts.")
+        return redirect("/login")
+
+    # TODO: add script to posts_list page to highlight correct nav menu and eliminate this page.
+    return render_template("user_posts.html", posts=posts)
 
 
 @app.route("/post_comments.json", methods=['GET'])
@@ -646,7 +666,7 @@ if __name__ == "__main__":
     # that we invoke the DebugToolbarExtension
 
     # Do not debug for demo
-    app.debug = True
+    app.debug = False
 
     connect_to_db(app)
 

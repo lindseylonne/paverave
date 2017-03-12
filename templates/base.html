@@ -108,7 +108,7 @@
             <ul class="nav navbar-nav navbar-right">
               {% if "user_id" in session %}
                   <li id="user-post-add"><a href="/posts/add">Add Post</a></li>
-                  <li id="user-posts"><a href="/posts/{{ session['user_id'] }}">My Posts</a></li>
+                  <li id="user-posts"><a href="/posts/user/{{ session['user_id'] }}">My Posts</a></li>
                   <li id="user-profile"><a href="/profile/{{ session['user_id'] }}">Profile</a></li>
                   <li id="user-logout"><a href="/logout">Logout</a></li>
               {% else %}
@@ -140,11 +140,12 @@
 
 </script>
 
-<footer class="footer">
+<!-- TODO: fix footer so it doesnt show mid-page on homepage -->
+<!-- <footer class="footer">
   <div class="container">
     <p class="text-muted">Copyright (c) Lindsey Lonne 2017</p>
   </div>
-</footer>
+</footer> -->
 
 </body>
 </html>

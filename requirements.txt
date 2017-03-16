@@ -13,7 +13,6 @@ Jinja2==2.7.3
 MarkupSafe==0.23
 packaging==16.8
 passlib==1.7.1
-pkg-resources==0.0.0
 psycopg2==2.6.2
 pycparser==2.17
 pygeocoder==1.2.5

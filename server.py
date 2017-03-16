@@ -666,7 +666,7 @@ if __name__ == "__main__":
     # that we invoke the DebugToolbarExtension
 
     # Do not debug for demo
-    app.debug = False
+    app.debug = True
 
     connect_to_db(app)
 

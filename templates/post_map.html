@@ -28,7 +28,7 @@
       function initMap() {
         var myLatLng = {lat: 37.788746, lng: -122.411585};
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 13,
+          zoom: 10,
           center: myLatLng
         });
         // Define global infoWindow
@@ -60,12 +60,14 @@
                     position: new google.maps.LatLng(post.latitude, post.longitude),
                     map: map,
                     title: 'License Plate: ' + post.vehicle_plate + ", Comment: " + post.topic,
-                    // icon: '/static/img/polar.png'
-                });
+                    // icon: '/static/img/car.png'
+                    // TODO: add icon image
+                 });
+                // TODO: add links in infoWindow content
                 // Define the content of the infoWindow
                 html = (
                     '<div class="window-content">' +
-                        '<p><b>Vehicle Plate: </b>' + post.vehicle_plate + '</p>' +
+                        '<p><b>Vehicle Plate: </b>' + post.vehicle_plate + '</p>' + "<p><b>Comment: </b>" + post.topic + '</p>' + 
                     '</div>');
                 // Inside the loop we call bindInfoWindow passing it the marker,
                 // map, infoWindow and contentString

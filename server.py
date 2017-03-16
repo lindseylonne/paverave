@@ -696,5 +696,4 @@ if __name__ == "__main__":
     SECRET_KEY = "ABCDEFG"
     SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "ABCDEF")
 
-
     app.run(host="0.0.0.0", port=PORT, debug=DEBUG)

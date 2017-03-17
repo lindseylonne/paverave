@@ -7,7 +7,12 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, User, Post, Vehicle, Comment
 # from pygeocoder import Geocoder
 import json
+
+# for heroku
 import os
+# import psycopg2
+# import urlparse
+
 # from sqlalchemy.sql import and_
 # from sqlalchemy import Date, cast
 # from datetime import date, datetime
@@ -18,7 +23,8 @@ import os
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
+# app.secret_key = "ABC"
+SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "ABCDEF")
 
 # Normally, if you use an undefined variable in Jinja2, it fails silently.
 # This is horrible. Fix this so that, instead, it raises an error.
@@ -668,32 +674,21 @@ def error():
     raise Exception("Error!")
 
 
-if __name__ == "__main__":
-    # We have to set debug=True here, since it has to be True at the point
-    # that we invoke the DebugToolbarExtension
-
-    # Do not debug for demo
-    # app.debug = True
-    app.debug = False
-
-    # connect_to_db(app)
+if __name__ == '__main__':
     connect_to_db(app, os.environ.get("DATABASE_URL"))
 
+    # Create the tables we need from our models (if they already
+    # exist, nothing will happen here, so it's fine to do this each
+    # time on startup)
+    db.create_all(app=app)
+
     # Use the DebugToolbar
+    app.debug = False
     DebugToolbarExtension(app)
     app.jinja_env.auto_reload = app.debug  # make sure templates, etc. are not cached in debug mode
 
-    # app.run()
-    # app.run(port=5000, host='0.0.0.0')
-    # set up to listen on all port for heroku deploy
-    PORT = int(os.environ.get("PORT", 5000))
-    # app.run(host="0.0.0.0", port=PORT)
-
-    # do not debug on heroku
     DEBUG = "NO_DEBUG" not in os.environ
-
-    # Flask secret key for deployment on heroku
-    SECRET_KEY = "ABCDEFG"
-    SECRET_KEY = os.environ.get("FLASK_SECRET_KEY", "ABCDEF")
+    # app.run(port=5000, host='0.0.0.0')
+    PORT = int(os.environ.get("PORT", 5000))
 
     app.run(host="0.0.0.0", port=PORT, debug=DEBUG)

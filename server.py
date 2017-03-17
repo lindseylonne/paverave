@@ -236,7 +236,9 @@ def posts_map():
         # post.username = user.username
     # TODO: add username to posts db so we do not double query?
 
-    return render_template("post_map.html", posts=posts)
+    api_key = os.environ['GOOGLE_MAPS_API_KEY']
+
+    return render_template("post_map.html", posts=posts, api_key=api_key)
 
 
 @app.route('/post_locations.json')

@@ -1,12 +1,21 @@
 # PaveRave!
 
-http://www.paverave.com
-Enter a vehicle license plate, and create a post. Comment and upvote. Sort and search. 
-Use for good or evil as you see fit... just keep the paverage online and off the streets, please!
-More to come: Heat map, mobile app, social features like badges and carma points. 
+https://www.paverave.com
+http://paverave.herokuapp.com/
+
+PaveRave is a social app that allows you to have conversations with other drivers.
+Enter a vehicle license plate, and create a post.
+Comment and upvote posts.
+Sort and search on license plate or user.
+View posts on a map.
+
+More to come: 
+* Mobile app with license plate image recognition. 
+* More social features like badges and carma points. Tagging users, messaging, and chat.
+
 Stay tuned! Email news@paverave.com with "subcribe" in the subject to receive notification of new features.
 
-(I created the initial version of this, my first solo project - in 2 sprints and approximately 80 hours - as part of an accelerated programming course at Hackbright Academy. Feedback is welcome and encouraged!)
+(This is my first full stack solo project with Python. It was created in 4 weeks (5 hours a day, M-F) as part of an accelerated programming course at Hackbright Academy. Feedback is welcome and encouraged!)
 
 ## Getting Started
 
@@ -14,36 +23,19 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Optional: Use whatever dev tools you prefer. We used these tools:
+* Python 2.* (with pip)
+* PostgreSQL
+* your Google Maps API key (If you want to use the map feature.)
+* Your favorite dev setup
+* the rest is installed from requirements.txt below
 
-* [Git Bash](https://git-for-windows.github.io/)
-* [Vagrant Virtual Machine](https://www.vagrantup.com/downloads.html)
-* [Sublime Text 2](https://sublimetext.com/2)
-* [SublimeLinter plugin](https://sublime.wbond.net/installation#st2)
+### Installing Locally
+
+[Clone the paverave repo to your local project directory.](https://help.github.com/articles/cloning-a-repository/)
 
 ```
-install git bash if you're using Windows
-install vagrant accepting defaults
-open git bash or your linux command line
-cd to your home directory
-mkdir vagrant
-mkdir src
-cd vagrant (download/unpack the vagrant setup files for your system to this folder)
-vagrant up
-vagrant ssh
-cd src
-mkdir paverave
 cd paverave
-virtualenv env (create your enviroment)
-source env/bin/activate (--always-copy if on Windows)
-```
-
-### Installing
-
-[Fork the paverave repository, then clone it to your local project directory.](https://guides.github.com/activities/forking/)
-
-```
-git init
+git clone https://github.com/lindseylonne/paverave
 ```
 
 Install the required packages listed in 
@@ -53,7 +45,7 @@ Install the required packages listed in
 pip install < requirements.txt
 ```
 
-Crete the database:
+Create the database:
 
 ```
 python -i model.py
@@ -69,7 +61,7 @@ python server.py
 Behold the wonder:
 
 ```
-Open your browser of choice and go to: http://localhost:5000
+http://localhost:5000
 ```
 
 ## Running the tests (loading...)
@@ -81,7 +73,7 @@ Explain how to run the automated tests for this system
 Explain what these tests test and why
 
 ```
-Give an example
+Insert example
 ```
 
 ### And coding style tests (loading...)
@@ -89,12 +81,32 @@ Give an example
 Explain what these tests test and why
 
 ```
-Give an example
+Insert example
 ```
 
 ## Deployment (loading...)
 
-Add additional notes about how to deploy this on a live system
+### Heroku:
+
+* create a free [account on heroku](https://www.heroku.com/)
+* install the [heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+
+```
+$ cd (your paverave git project dir)
+$ heroku login
+$ heroku apps:create "nameofyourapp"
+$ heroku git:remote -a "nameofyourapp"
+$ git remote -v // to confirm
+$ git push heroku master
+$ heroku config:set NO_DEBUG=1
+$ heroku config:set GOOGLE_MAPS_API_KEY="your api key"
+$ heroku config:set FLASK_SECRET_KEY="choose your key"
+$ heroku addons:create heroku-postgresql
+$ heroku config // should show everything you just entered
+$ heroku pg:psql // allows access to your new DB
+$ git push heroku master
+$ heroku open // should launch http://(nameofyourapp).herokuapp.com/
+```
 
 ## Built With
 
@@ -109,11 +121,11 @@ Python, Javascript, PostgreSQL, and...
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/lindseylonne/paverave/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/lindseylonne/paverave/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/lindseylonne/paverave/tags). 
+This project uses [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/lindseylonne/paverave/tags). 
 
 ## Authors
 
@@ -127,6 +139,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 
 ## Acknowledgments
 
-* Heartfelt thanks to the amazing staff at [Hackbright Academy](https://hackbrightacademy.com/). I could not have done this without your tireless dedication and support!
+* Heartfelt thanks to the amazing staff at [Hackbright Academy](https://hackbrightacademy.com/). I could not have done this without your dedication and support!
 * Much love to my Hackbright cohort mates in Ada Winter 2017. Thank you for the friendship and inspiration!
 * Deepest gratitude to my family and friends for their patience while I dropped off the face of the planet for a few weeks.
